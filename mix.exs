@@ -29,7 +29,7 @@ defmodule Download.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     # Specify extra applications you'll use from Erlang/Elixir
-    [applications: [:httpoison]]
+    [applications: [:logger, :httpoison]]
   end
 
   defp deps do

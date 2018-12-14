@@ -1,4 +1,5 @@
 defmodule Download do
+  require Logger
 
   @doc """
   subj.
@@ -29,6 +30,7 @@ defmodule Download do
   """
 
   @default_max_file_size 1024 * 1024 * 1000 # 1 GB
+  @verbose_logging Application.get_env(:download, :verbose_logging) || false
 
   def from(url, opts \\ []) do
     max_file_size = Keyword.get(opts, :max_file_size, @default_max_file_size)
@@ -107,6 +109,11 @@ defmodule Download do
 
     if downloaded_content_length < opts.max_file_size do
       IO.binwrite(opts.file, data)
+
+      if @verbose_logging do
+        Logger.info("Writing #{byte_size(data)} bytes ...")
+      end
+
       opts_with_content_length_increased = Map.put(opts, :downloaded_content_length, downloaded_content_length)
       do_download(opts_with_content_length_increased)
     else
